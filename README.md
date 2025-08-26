@@ -18,14 +18,13 @@ After the run you'll get:
 - HTML report in htmlcov/index.html
 - XML report in coverage.xml
 
-## Static type checking (mypy)
+## Static type checking (ty)
 
-[mypy](https://mypy-lang.org/) is configured in `pyproject.toml` (strict mode enabled) and installed via the dev
-dependency group.
+[ty](https://docs.astral.sh/ty/) is configured in `pyproject.toml` and installed via the dev dependency group.
 
-Run mypy for the whole project:
+Run ty for the whole project:
 
-    uv run mypy app tests
+    uv run ty check
 
 If you haven't installed dev dependencies yet, run the initial setup above (`uv sync`).
 
