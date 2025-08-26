@@ -28,10 +28,13 @@ def test_with_string_item_id_returns_422() -> None:
     assert response.status_code == 422
 
 
-@pytest.mark.parametrize("given_accept_header", [
-    "application/xml",
-    "text/plain",
-])
+@pytest.mark.parametrize(
+    "given_accept_header",
+    [
+        "application/xml",
+        "text/plain",
+    ],
+)
 def test_with_requesting_plain_text_returns_406(given_accept_header: str) -> None:
     response = client.get("/items/1", headers={"Accept": given_accept_header})
 

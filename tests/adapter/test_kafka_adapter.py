@@ -19,5 +19,7 @@ def test_publish_item(kafka_service: str) -> None:
 
         assert actual_msg is not None
         data = json.loads(actual_msg.value().decode("utf-8"))
-        actual_item = Item(item_id=data["item_id"], name=data["name"], price=data["price"])
+        actual_item = Item(
+            item_id=data["item_id"], name=data["name"], price=data["price"]
+        )
         assert actual_item == create_item_fixture()

@@ -19,6 +19,9 @@ jobs:
       - name: Sync dependencies (including dev)
         run: uv sync
 
+      - name: Check code formatting with Black
+        run: uv run black --check .
+
       - name: Type check with ty
         run: uv run ty check
 

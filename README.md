@@ -28,6 +28,18 @@ Run ty for the whole project:
 
 If you haven't installed dev dependencies yet, run the initial setup above (`uv sync`).
 
+## Code formatting (Black)
+
+[Black](https://black.readthedocs.io/) is used for code formatting.
+
+Check formatting (CI does this):
+
+      uv run black --check .
+
+Auto-format the code locally:
+
+      uv run black .
+
 ## Creating and running a Docker container
 
 Build the container:

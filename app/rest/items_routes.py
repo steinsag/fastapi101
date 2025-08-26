@@ -8,7 +8,9 @@ router = APIRouter()
 
 
 @router.get("/items/{item_id}")
-def get_item(item_id: int, q: Union[str, None] = None) -> Dict[str, Union[str, int, None]]:
+def get_item(
+    item_id: int, q: Union[str, None] = None
+) -> Dict[str, Union[str, int, None]]:
     return {"item_id": item_id, "q": q}
 
 

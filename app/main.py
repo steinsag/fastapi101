@@ -12,7 +12,7 @@ is_dev = "dev" in sys.argv
 app = FastAPI(
     docs_url="/docs" if is_dev else None,
     redoc_url="/redoc" if is_dev else None,
-    openapi_url="/openapi.json" if is_dev else None
+    openapi_url="/openapi.json" if is_dev else None,
 )
 
 app.include_router(items_routes.router)
@@ -23,7 +23,9 @@ for route in app.routes:
 
 
 @app.middleware("http")
-async def enforce_json_accept(request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
+async def enforce_json_accept(
+    request: Request, call_next: Callable[[Request], Awaitable[Response]]
+) -> Response:
     accept = request.headers.get("accept", "")
     if "application/json" not in accept and "*/*" not in accept:
         return JSONResponse(
