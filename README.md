@@ -5,6 +5,46 @@ This project uses package manager [uv](https://github.com/astral-sh/uv) to manag
 
     uv sync
 
+## Verify (format, lint, type-check, tests)
+
+One command to auto-fix formatting/lints, run type checks, and tests:
+
+      uv run scripts/verify.py
+
+This runs, in order: `black .`, `ruff check --fix .`, `ty check`, `pytest`.
+
+## Code formatting (Black)
+
+[Black](https://black.readthedocs.io/) is used for code formatting.
+
+Check formatting (CI does this):
+
+      uv run black --check .
+
+Auto-format the code locally:
+
+      uv run black .
+
+## Linting (Ruff)
+
+[Ruff](https://docs.astral.sh/ruff/) enforces common Python lint rules and import sorting.
+
+Run Ruff for the whole project:
+
+    uv run ruff check .
+
+Optionally, to auto-fix what Ruff can fix:
+
+    uv run ruff check . --fix
+
+## Static type checking (ty)
+
+[ty](https://docs.astral.sh/ty/) is used for static type checking.
+
+Run ty for the whole project:
+
+    uv run ty check
+
 ## Running tests (with coverage)
 
 Pytest is configured to generate coverage reports automatically via pytest-cov.
@@ -18,40 +58,6 @@ After the run you'll get:
 - Terminal coverage summary (missing lines shown, skip-covered enabled)
 - HTML report in htmlcov/index.html
 - XML report in coverage.xml
-
-## Static type checking (ty)
-
-[ty](https://docs.astral.sh/ty/) is configured in `pyproject.toml` and installed via the dev dependency group.
-
-Run ty for the whole project:
-
-    uv run ty check
-
-If you haven't installed dev dependencies yet, run the initial setup above (`uv sync`).
-
-## Linting (Ruff)
-
-[Ruff](https://docs.astral.sh/ruff/) is configured in `pyproject.toml` and installed as a dev dependency. It enforces common Python lint rules and import sorting (E, F, I).
-
-Run Ruff for the whole project:
-
-    uv run ruff check .
-
-Optionally, to auto-fix what Ruff can fix:
-
-    uv run ruff check . --fix
-
-## Code formatting (Black)
-
-[Black](https://black.readthedocs.io/) is used for code formatting.
-
-Check formatting (CI does this):
-
-      uv run black --check .
-
-Auto-format the code locally:
-
-      uv run black .
 
 ## Git pre-commit hooks
 

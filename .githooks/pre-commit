@@ -14,14 +14,14 @@ require_uv() {
   fi
 }
 
-run_black_check() {
-  echo "[pre-commit] Checking code formatting with Black..."
-  uv run black --check .
-}
-
 run_ruff_check() {
   echo "[pre-commit] Linting with Ruff..."
   uv run ruff check .
+}
+
+run_black_check() {
+  echo "[pre-commit] Checking code formatting with Black..."
+  uv run black --check .
 }
 
 run_ty_check() {

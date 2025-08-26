@@ -28,5 +28,5 @@ jobs:
       - name: Type check with ty
         run: uv run ty check
 
-      - name: Run tests
+      - name: Run tests with pytest
         run: uv run pytest
