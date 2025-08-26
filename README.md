@@ -13,18 +13,30 @@ Run tests:
     uv run pytest
 
 After the run you'll get:
+
 - Terminal coverage summary (missing lines shown, skip-covered enabled)
 - HTML report in htmlcov/index.html
 - XML report in coverage.xml
+
+## Static type checking (mypy)
+
+[mypy](https://mypy-lang.org/) is configured in `pyproject.toml` (strict mode enabled) and installed via the dev
+dependency group.
+
+Run mypy for the whole project:
+
+    uv run mypy app tests
+
+If you haven't installed dev dependencies yet, run the initial setup above (`uv sync`).
 
 ## Creating and running a Docker container
 
 Build the container:
 
-   docker build -t fastapi101
+docker build -t fastapi101
 
 Run the container:
 
-   docker run -p 8000:8000 fastapi101
-   
+docker run -p 8000:8000 fastapi101
+
 The app is listening on port 8000 locally. Try: http://localhost:8000/items/5?q=somequery
