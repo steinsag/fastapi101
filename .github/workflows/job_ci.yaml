@@ -1,0 +1,26 @@
+name: Reusable CI Job
+
+on:
+  workflow_call:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python and uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.13"
+
+      - name: Sync dependencies (including dev)
+        run: uv sync
+
+      - name: Type check with mypy
+        run: uv run mypy app tests
+
+      - name: Run tests
+        run: uv run pytest

@@ -1,0 +1,12 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - feature/**
+      - bugfix/**
+
+jobs:
+  build-and-test:
+    uses: ./.github/workflows/job_ci.yaml
