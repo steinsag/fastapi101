@@ -17,7 +17,7 @@ This runs, in order: `black .`, `ruff check --fix .`, `ty check`, `pytest`.
 
 [Black](https://black.readthedocs.io/) is used for code formatting.
 
-Check formatting (CI does this):
+Check formatting:
 
       uv run black --check .
 
@@ -77,10 +77,10 @@ To bypass the hook: `git commit --no-verify`
 
 Build the container:
 
-docker build -t fastapi101
+    docker build -t fastapi101
 
 Run the container:
 
-docker run -p 8000:8000 fastapi101
+    docker run -p 8000:8000 fastapi101
 
 The app is listening on port 8000 locally. Try: http://localhost:8000/items/5?q=somequery
