@@ -1,3 +1,4 @@
+
 ## Initial setup
 
 This project uses package manager [uv](https://github.com/astral-sh/uv) to manage dependencies.
@@ -39,6 +40,19 @@ Check formatting (CI does this):
 Auto-format the code locally:
 
       uv run black .
+
+## Git pre-commit hooks
+
+Enable the repository-managed pre-commit hook so that linters and formatters run before each commit:
+
+    git config core.hooksPath .githooks
+
+What it does:
+- Runs Black in check mode: `uv run black --check .`
+- Runs ty: `uv run ty check`
+- Blocks the commit if formatting or typing issues are found
+
+To bypass the hook: `git commit --no-verify`
 
 ## Creating and running a Docker container
 
