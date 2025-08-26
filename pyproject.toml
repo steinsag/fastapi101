@@ -1,0 +1,26 @@
+[tool.mypy]
+python_version = "3.13"
+strict = true
+
+[project]
+name = "fastapi101"
+version = "0.1.0"
+description = "Simple FastAPI tutorial"
+authors = [
+    { name = "Your Name", email = "you@example.com" }
+]
+license = { text = "Apache" }
+readme = "README.md"
+requires-python = ">=3.13,<4.0"
+dependencies = [
+    "fastapi[standard-no-fastapi-cloud-cli] (>=0.116.1,<0.117.0)",
+    "confluent-kafka (>=2.11.0,<3.0.0)"
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.17.1",
+    "pytest>=8.4.1",
+    "testcontainers[kafka]>=4.12.0",
+]
+

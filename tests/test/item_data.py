@@ -1,0 +1,3 @@
+ITEM_ID = 1
+ITEM_NAME = "Sample Item"
+ITEM_PRICE = 107.99
