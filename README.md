@@ -16,3 +16,15 @@ After the run you'll get:
 - Terminal coverage summary (missing lines shown, skip-covered enabled)
 - HTML report in htmlcov/index.html
 - XML report in coverage.xml
+
+## Creating and running a Docker container
+
+Build the container:
+
+   docker build -t fastapi101
+
+Run the container:
+
+   docker run -p 8000:8000 fastapi101
+   
+The app is listening on port 8000 locally. Try: http://localhost:8000/items/5?q=somequery
