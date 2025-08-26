@@ -9,4 +9,4 @@ on:
 
 jobs:
   build-and-test:
-    uses: ./.github/workflows/job_ci.yaml
+    uses: ./.github/workflows/job_ci.yml
