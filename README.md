@@ -29,6 +29,18 @@ Run ty for the whole project:
 
 If you haven't installed dev dependencies yet, run the initial setup above (`uv sync`).
 
+## Linting (Ruff)
+
+[Ruff](https://docs.astral.sh/ruff/) is configured in `pyproject.toml` and installed as a dev dependency. It enforces common Python lint rules and import sorting (E, F, I).
+
+Run Ruff for the whole project:
+
+    uv run ruff check .
+
+Optionally, to auto-fix what Ruff can fix:
+
+    uv run ruff check . --fix
+
 ## Code formatting (Black)
 
 [Black](https://black.readthedocs.io/) is used for code formatting.
@@ -48,9 +60,10 @@ Enable the repository-managed pre-commit hook so that linters and formatters run
     git config core.hooksPath .githooks
 
 What it does:
-- Runs Black in check mode: `uv run black --check .`
 - Runs ty: `uv run ty check`
-- Blocks the commit if formatting or typing issues are found
+- Runs Ruff lint: `uv run ruff check .`
+- Runs Black in check mode: `uv run black --check .`
+- Blocks the commit if linting, formatting, or typing issues are found
 
 To bypass the hook: `git commit --no-verify`
 

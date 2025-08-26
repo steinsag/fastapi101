@@ -20,7 +20,21 @@ dev = [
     "testcontainers[kafka]>=4.12.0",
     "ty>=0.0.1a19",
     "black>=24.8.0",
+    "ruff>=0.6.9",
 ]
+
+[tool.ruff]
+line-length = 88
+# Match the project's Python version
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F"]
+# You can add ignores here if needed
+ignore = []
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*" = ["F401", "F811"]
 
 
 [tool.pytest.ini_options]
