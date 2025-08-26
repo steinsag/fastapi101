@@ -1,4 +1,6 @@
 from confluent_kafka import Consumer  # type: ignore
+from types import TracebackType
+from typing import Optional
 
 
 class KafkaTestConsumer:
@@ -19,5 +21,6 @@ class KafkaTestConsumer:
         self.consumer.subscribe([self.topic])
         return self.consumer
 
-    def __exit__(self, exc_type: type, exc_val: Exception, exc_tb: object) -> None:
+    def __exit__(self, exc_type: Optional[type[BaseException]], exc_val: Optional[BaseException], exc_tb: Optional[TracebackType]) -> Optional[bool]:
         self.consumer.close()
+        return None

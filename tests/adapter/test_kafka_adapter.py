@@ -18,5 +18,6 @@ def test_publish_item(kafka_service: str) -> None:
         actual_msg = consumer.poll(timeout=POLL_TIMEOUT)
 
         assert actual_msg is not None
-        actual_item = Item(**json.loads(actual_msg.value().decode("utf-8")))
+        data = json.loads(actual_msg.value().decode("utf-8"))
+        actual_item = Item(item_id=data["item_id"], name=data["name"], price=data["price"])
         assert actual_item == create_item_fixture()
