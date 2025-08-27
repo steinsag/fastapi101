@@ -5,7 +5,7 @@ import pytest
 from app.adapter.mongo_adapter import get_items_collection
 from app.domain.item_service import ItemService
 from tests.test.item_data import ITEM_ID, ITEM_NAME, ITEM_PRICE
-from tests.test.item_fixture import create_item_fixture
+from tests.test.item_fixture import create_item_fixture, create_item_db_fixture
 from tests.test.mockserver.mongodb_test_container import mongodb_service
 
 
@@ -22,7 +22,7 @@ def sut(items_collection) -> ItemService:
 
 
 def test_with_valid_id_returns_item(sut: ItemService, items_collection) -> None:
-    items_collection.insert_one({"id": ITEM_ID, "name": ITEM_NAME, "price": ITEM_PRICE})
+    items_collection.insert_one(create_item_db_fixture())
 
     actual_item = sut.get_item_by_id(ITEM_ID)
 

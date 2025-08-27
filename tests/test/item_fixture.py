@@ -16,3 +16,11 @@ def create_item_dto_fixture() -> ItemDto:
         name=ITEM_NAME,
         price=ITEM_PRICE,
     )
+
+
+def create_item_db_fixture() -> dict:
+    return {
+        "id": ITEM_ID,
+        "name": ITEM_NAME,
+        "price": ITEM_PRICE,
+    }
