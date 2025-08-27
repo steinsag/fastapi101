@@ -3,6 +3,6 @@ from dataclasses import dataclass
 
 @dataclass
 class Item:
-    item_id: int
+    id: int
     name: str
     price: float
