@@ -2,8 +2,59 @@
 ## Initial setup
 
 This project uses package manager [uv](https://github.com/astral-sh/uv) to manage dependencies.
+Run the following to install all dependencies:
 
     uv sync
+
+## Running the service locally
+
+Start MongoDB via Docker Compose (one-time seed included):
+
+    docker compose -f scripts/docker/docker-compose.yml up -d
+
+This starts MongoDB on localhost:27017 and creates an application user on DB "test":
+- username: test
+- password: test
+- database: test
+
+On first startup, it also seeds the "items" collection with a sample document:
+
+    { "id": 1, "name": "Sample Item", "price": 107.99 }
+
+Set environment variable for the app to connect to MongoDB (note the database name is part of the URL path):
+
+    export MONGODB_URL="mongodb://test:test@localhost:27017/test?authSource=test"
+
+Install dependencies and run the API locally (use FastAPI CLI for better dev experience: auto-reload, live reload for static files, improved error pages):
+
+    uv sync
+    uv run fastapi dev app/main.py
+
+The app listens on http://localhost:8000. Try fetching the seeded item:
+
+    curl http://localhost:8000/items/1
+
+Expected response:
+
+    {"id": 1, "name": "Sample Item", "price": 107.99}
+
+To stop MongoDB when finished:
+
+    docker compose -f scripts/docker/docker-compose.yml down
+
+## Creating and running a Docker container
+
+Build the container:
+
+    docker build -t fastapi101 .
+
+Run the container (provide MongoDB connection via env var):
+
+    docker run -p 8000:8000 \
+      -e MONGODB_URL="mongodb://test:test@host.docker.internal:27017/test?authSource=test" \
+      fastapi101
+
+The app is listening on port 8000 locally. Try: http://localhost:8000/items/1
 
 ## Verify (format, lint, type-check, tests)
 
@@ -72,15 +123,3 @@ What it does:
 - Blocks the commit if linting, formatting, or typing issues are found
 
 To bypass the hook: `git commit --no-verify`
-
-## Creating and running a Docker container
-
-Build the container:
-
-    docker build -t fastapi101
-
-Run the container:
-
-    docker run -p 8000:8000 fastapi101
-
-The app is listening on port 8000 locally. Try: http://localhost:8000/items/5?q=somequery

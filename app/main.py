@@ -1,10 +1,13 @@
 import sys
 from typing import Callable, Awaitable
 
-from fastapi import FastAPI, Request, Response
+from fastapi import Depends, FastAPI, Request, Response
 from fastapi.responses import JSONResponse
 from fastapi.routing import APIRoute
 
+from app.adapter.mongo_adapter import get_items_collection
+from app.domain.item_service import ItemService
+from app.domain.item_service_protocol import ItemServiceProtocol
 from .rest import items_routes
 
 is_dev = "dev" in sys.argv
@@ -20,6 +23,15 @@ app.include_router(items_routes.router)
 for route in app.routes:
     if isinstance(route, APIRoute):
         route.response_class = JSONResponse
+
+
+def item_service_provider(
+    items_collection=Depends(get_items_collection),
+) -> ItemServiceProtocol:
+    return ItemService(items_collection_provider=lambda: items_collection)
+
+
+app.dependency_overrides[ItemService] = item_service_provider
 
 
 @app.middleware("http")

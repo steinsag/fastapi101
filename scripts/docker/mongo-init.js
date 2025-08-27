@@ -1,17 +1,28 @@
-// This script runs automatically on first container startup.
-// It creates a non-admin user "test" with password "test" on the database "test".
+// This script can be run on first initialization and on subsequent starts.
+// It ensures the application user exists and idempotently seeds the "items" collection.
 
-// The official image runs this with the root user specified via MONGO_INITDB_ROOT_USERNAME/PASSWORD.
-
-// Connect to the "test" database and create the application user.
+// Connect to the "test" database.
 db = db.getSiblingDB('test');
 
-db.createUser({
-  user: 'test',
-  pwd: 'test',
-  roles: [
-    { role: 'readWrite', db: 'test' }
-  ]
-});
+// Ensure app user exists
+if (!db.getUser('test')) {
+  db.createUser({
+    user: 'test',
+    pwd: 'test',
+    roles: [
+      { role: 'readWrite', db: 'test' }
+    ]
+  });
+}
 
-print('Initialized MongoDB: created user "test" with readWrite on db "test"');
+// Seed or update item id:1
+// Use upsert to ensure the document exists with expected fields
+// Note: keep literal types (id as number) to match application expectations
+const seedId = 1;
+db.items.updateOne(
+  { id: seedId },
+  { $set: { name: 'Sample Item', price: 107.99 } },
+  { upsert: true }
+);
+
+print('Mongo seed complete: ensured user "test" and upserted items[1]');

@@ -18,3 +18,13 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  mongodb-seed:
+    image: mongo:8.0
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    restart: "no"
+    volumes:
+      - ./mongo-init.js:/seed.js:ro
+    command: ["bash", "-lc", "mongosh \"mongodb://root:root@mongodb:27017/admin\" /seed.js"]

@@ -1,5 +1,6 @@
 import os
 from typing import Generator
+from urllib.parse import urlparse
 
 import pytest
 from testcontainers.mongodb import MongoDbContainer  # type: ignore
@@ -8,9 +9,13 @@ from testcontainers.mongodb import MongoDbContainer  # type: ignore
 @pytest.fixture(scope="session")
 def mongodb_service() -> Generator[str, None, None]:
     with MongoDbContainer("mongo:8.0") as mongo:
-        host = mongo.get_container_host_ip()
-        port = mongo.get_exposed_port(27017)
-        uri = f"mongodb://{host}:{port}/"
+        uri = mongo.get_connection_url()
+        parsed = urlparse(uri)
+        hostport = parsed.netloc.split("@")[-1]
+        if parsed.username and parsed.password:
+            uri = f"mongodb://{parsed.username}:{parsed.password}@{hostport}/test?authSource=admin"
+        else:
+            uri = f"mongodb://{hostport}/test"
 
         os.environ["MONGODB_URL"] = uri
 
