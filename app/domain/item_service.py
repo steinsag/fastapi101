@@ -11,7 +11,7 @@ class ItemService(ItemServiceProtocol):
     def get_item_by_id(self, item_id: int) -> Item | None:
         provider = self._items_collection_provider
         if provider is None:
-            return None
+            raise RuntimeError("Items collection provider is not configured")
 
         collection = provider()
         doc = collection.find_one(

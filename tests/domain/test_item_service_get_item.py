@@ -33,3 +33,12 @@ def test_with_invalid_id_returns_none(sut: ItemService, items_collection) -> Non
     actual_item = sut.get_item_by_id(123)
 
     assert actual_item is None
+
+
+def test_with_no_provider_raises_error() -> None:
+    sut = ItemService(items_collection_provider=None)
+
+    with pytest.raises(RuntimeError) as exc_info:
+        sut.get_item_by_id(ITEM_ID)
+
+    assert "Items collection provider is not configured" in str(exc_info.value)
