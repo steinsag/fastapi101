@@ -82,8 +82,8 @@ Last updated: 2025-08-27 10:51 (local)
 
 ## Review checklist
 - [ ] Code compiles and tests pass locally.
-- [ ] Code is formatted consistently using `uv run black .`.
 - [ ] Code is linted using `uv run ruff check --fix .`.
+- [ ] Code is formatted consistently using `uv run black .`.
 - [ ] Code is type checked using `uv run ty check`.
 - [ ] REST/Domain/Adapter boundaries respected.
 - [ ] DTOs and models mapped correctly; response schemas match tests.
@@ -93,9 +93,9 @@ Last updated: 2025-08-27 10:51 (local)
 
 ## Pre-submit requirements (Junie)
 - Before calling the `submit` tool, Junie must execute and pass all items from the Review checklist and report their outcomes in the `<UPDATE>` section:
-  - Run tests: `uv run pytest -q`.
-  - Format code: `uv run black .`.
   - Lint and auto-fix: `uv run ruff check --fix .`.
+  - Format code: `uv run black .`.
   - Type check: `uv run ty check`.
+  - Run tests: `uv run pytest -q`.
 - If any step fails, do not submit. Fix the issues or ask the User for help via `<ask_user>` according to the workflow.
 - Ensure REST/Domain/Adapter boundaries and content negotiation/error handling behaviors continue to comply with these guidelines before submission.
