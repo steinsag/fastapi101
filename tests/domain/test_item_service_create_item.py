@@ -33,9 +33,27 @@ def test_create_item_returns_created_item(sut: ItemService) -> None:
 
 
 def test_create_item_without_configuration_raises() -> None:
-    service = ItemService()
+    with pytest.raises(TypeError):
+        ItemService()  # type: ignore[misc]
 
-    with pytest.raises(RuntimeError) as exc_info:
-        service.create_item(NewItem(name=ITEM_NAME, price=ITEM_PRICE))
 
-    assert "Create item is not configured" in str(exc_info.value)
+def test_with_no_id_generator_raises_error() -> None:
+    with pytest.raises(ValueError) as exc_info:
+        ItemService(
+            id_generator=None,  # type: ignore[arg-type]
+            get_item_by_id_provider=lambda _i: None,
+            create_item_provider=lambda new_item, new_id: Item(
+                id=new_id, name=new_item.name, price=new_item.price
+            ),
+        )
+    assert "id_generator must not be None" in str(exc_info.value)
+
+
+def test_with_no_create_item_provider_raises_error() -> None:
+    with pytest.raises(ValueError) as exc_info:
+        ItemService(
+            id_generator=lambda: ITEM_ID,
+            get_item_by_id_provider=lambda _i: None,
+            create_item_provider=None,  # type: ignore[arg-type]
+        )
+    assert "create_item_provider must not be None" in str(exc_info.value)

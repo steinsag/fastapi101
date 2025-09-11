@@ -13,6 +13,17 @@ def reset_singleton() -> Iterator[None]:
     mongo_adapter._mongo_client = None  # type: ignore[attr-defined]
 
 
+def test_get_items_collection_raises_runtime_error_when_env_missing(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.delenv("MONGODB_URL", raising=False)
+
+    with pytest.raises(RuntimeError) as exc_info:
+        mongo_adapter.get_items_collection()
+
+    assert str(exc_info.value) == "MONGODB_URL environment variable is required"
+
+
 def test_get_items_collection_raises_runtime_error_when_no_db_in_url(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:

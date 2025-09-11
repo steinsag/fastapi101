@@ -8,25 +8,23 @@ from .model.new_item import NewItem
 class ItemService(ItemServiceProtocol):
     def __init__(
         self,
-        id_generator: Callable[[], int] | None = None,
-        get_item_by_id_provider: Callable[[int], Item | None] | None = None,
-        create_item_provider: Callable[[NewItem, int], Item] | None = None,
+        id_generator: Callable[[], int],
+        get_item_by_id_provider: Callable[[int], Item | None],
+        create_item_provider: Callable[[NewItem, int], Item],
     ):
+        if id_generator is None:
+            raise ValueError("id_generator must not be None")
+        if get_item_by_id_provider is None:
+            raise ValueError("get_item_by_id_provider must not be None")
+        if create_item_provider is None:
+            raise ValueError("create_item_provider must not be None")
         self._id_generator = id_generator
         self._get_item_by_id_provider = get_item_by_id_provider
         self._create_item_provider = create_item_provider
 
     def get_item_by_id(self, item_id: int) -> Item | None:
-        provider = self._get_item_by_id_provider
-        if provider is None:
-            raise RuntimeError("Item provider is not configured")
-
-        return provider(item_id)
+        return self._get_item_by_id_provider(item_id)
 
     def create_item(self, new_item: NewItem) -> Item:
-        id_generator = self._id_generator
-        create_provider = self._create_item_provider
-        if id_generator is None or create_provider is None:
-            raise RuntimeError("Create item is not configured")
-        new_id = id_generator()
-        return create_provider(new_item, new_id)
+        new_id = self._id_generator()
+        return self._create_item_provider(new_item, new_id)
