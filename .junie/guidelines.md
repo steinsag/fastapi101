@@ -56,6 +56,7 @@ Last updated: 2025-08-27 10:51 (local)
   - Override dependencies via app.dependency_overrides.
   - Provide fakes implementing Protocols for service boundaries.
 - Implement component tests (tests/componenttests) integrating all parts of the system using TestClient and TestContainers.
+- Do not add test code or functionality required for testing to production code. Instead, use mocks or proper test setup to provide necessary dependencies.
 
 ## Dependency management
 - Use uv as package manager.
