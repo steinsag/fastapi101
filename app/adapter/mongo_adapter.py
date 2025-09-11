@@ -1,10 +1,12 @@
 import os
 from typing import Any, Dict, Iterable, Optional
 
+from bson import ObjectId
 from pymongo import MongoClient
 from pymongo.errors import ConfigurationError
 
 from app.domain.model.item import Item
+from app.domain.model.new_item import NewItem
 
 _mongo_client: MongoClient | None = None
 
@@ -79,3 +81,15 @@ def get_item_by_id(item_id: int) -> Item | None:
     if doc is None:
         return None
     return Item(id=int(doc["_id"]), name=str(doc["name"]), price=float(doc["price"]))
+
+
+def generate_new_id() -> int:
+    oid = ObjectId()
+    return int(str(oid), 16)
+
+
+def create_item(new_item: NewItem, new_id: int) -> Item:
+    collection = get_items_collection()
+    doc = {"_id": int(new_id), "name": new_item.name, "price": float(new_item.price)}
+    collection.insert_one(doc)
+    return Item(id=int(new_id), name=new_item.name, price=float(new_item.price))
