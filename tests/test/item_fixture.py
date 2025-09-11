@@ -20,7 +20,7 @@ def create_item_dto_fixture() -> ItemDto:
 
 def create_item_db_fixture() -> dict:
     return {
-        "id": ITEM_ID,
+        "_id": ITEM_ID,
         "name": ITEM_NAME,
         "price": ITEM_PRICE,
     }

@@ -14,9 +14,9 @@ class ItemService(ItemServiceProtocol):
             raise RuntimeError("Items collection provider is not configured")
 
         collection = provider()
-        doc = collection.find_one(
-            {"id": item_id}, {"_id": 0, "id": 1, "name": 1, "price": 1}
-        )
+        doc = collection.find_one({"_id": item_id}, {"_id": 1, "name": 1, "price": 1})
         if doc is None:
             return None
-        return Item(id=int(doc["id"]), name=str(doc["name"]), price=float(doc["price"]))
+        return Item(
+            id=int(doc["_id"]), name=str(doc["name"]), price=float(doc["price"])
+        )

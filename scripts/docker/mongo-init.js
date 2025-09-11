@@ -15,12 +15,12 @@ if (!db.getUser('test')) {
   });
 }
 
-// Seed or update item id:1
+// Seed or update item _id:1
 // Use upsert to ensure the document exists with expected fields
-// Note: keep literal types (id as number) to match application expectations
+// Note: keep literal types (_id as number) to match application expectations
 const seedId = 1;
 db.items.updateOne(
-  { id: seedId },
+  { _id: seedId },
   { $set: { name: 'Sample Item', price: 107.99 } },
   { upsert: true }
 );
