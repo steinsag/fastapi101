@@ -35,21 +35,21 @@ def get_items_collection() -> Any:
     return db[MONGODB_ITEMS_COLLECTION]
 
 
-def get_item_by_id(item_id: int) -> Item | None:
+def get_item_by_id(item_id: str) -> Item | None:
     collection = get_items_collection()
     doc = collection.find_one({"_id": item_id}, {"_id": 1, "name": 1, "price": 1})
     if doc is None:
         return None
-    return Item(id=int(doc["_id"]), name=str(doc["name"]), price=float(doc["price"]))
+    return Item(id=str(doc["_id"]), name=str(doc["name"]), price=float(doc["price"]))
 
 
-def generate_new_id() -> int:
+def generate_new_id() -> str:
     oid = ObjectId()
-    return int(str(oid), 16)
+    return str(oid)
 
 
-def create_item(new_item: NewItem, new_id: int) -> Item:
+def create_item(new_item: NewItem, new_id: str) -> Item:
     collection = get_items_collection()
-    doc = {"_id": int(new_id), "name": new_item.name, "price": float(new_item.price)}
+    doc = {"_id": new_id, "name": new_item.name, "price": new_item.price}
     collection.insert_one(doc)
-    return Item(id=int(new_id), name=new_item.name, price=float(new_item.price))
+    return Item(id=str(new_id), name=new_item.name, price=new_item.price)

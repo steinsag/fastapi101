@@ -27,8 +27,8 @@ def test_create_item_inserts_and_returns_item(items_collection) -> None:
     assert stored == {"_id": ITEM_ID, "name": ITEM_NAME, "price": ITEM_PRICE}
 
 
-def test_generate_new_id_returns_int() -> None:
+def test_generate_new_id_returns_str() -> None:
     new_id = mongo_adapter.generate_new_id()
 
-    assert isinstance(new_id, int)
-    assert new_id > 0
+    assert isinstance(new_id, str)
+    assert len(new_id) > 0

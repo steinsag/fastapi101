@@ -1,7 +1,10 @@
-import pytest
 from typing import Callable
+
+import pytest
+
+from tests.test.item_data import ITEM_ID
 
 
 @pytest.fixture()
-def id_generator() -> Callable[[], int]:
-    return lambda: 1
+def id_generator() -> Callable[[], str]:
+    return lambda: ITEM_ID

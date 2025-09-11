@@ -17,9 +17,9 @@ This starts MongoDB on localhost:27017 and creates an application user on DB "te
 - password: test
 - database: test
 
-On first startup, it also seeds the "items" collection with a sample document:
+On the first startup, it also seeds the "items" collection with a sample document:
 
-    { "_id": 1, "name": "Sample Item", "price": 107.99 }
+    { "_id": "1", "name": "Sample Item", "price": 107.99 }
 
 Set environment variable for the app to connect to MongoDB (note the database name is part of the URL path):
 
@@ -36,7 +36,7 @@ The app listens on http://localhost:8000. Try fetching the seeded item:
 
 Expected response:
 
-    {"id": 1, "name": "Sample Item", "price": 107.99}
+    {"id": "1", "name": "Sample Item", "price": 107.99}
 
 To stop MongoDB when finished:
 

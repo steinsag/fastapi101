@@ -8,9 +8,9 @@ from .model.new_item import NewItem
 class ItemService(ItemServiceProtocol):
     def __init__(
         self,
-        id_generator: Callable[[], int],
-        get_item_by_id_provider: Callable[[int], Item | None],
-        create_item_provider: Callable[[NewItem, int], Item],
+        id_generator: Callable[[], str],
+        get_item_by_id_provider: Callable[[str], Item | None],
+        create_item_provider: Callable[[NewItem, str], Item],
     ):
         if id_generator is None:
             raise ValueError("id_generator must not be None")
@@ -22,7 +22,7 @@ class ItemService(ItemServiceProtocol):
         self._get_item_by_id_provider = get_item_by_id_provider
         self._create_item_provider = create_item_provider
 
-    def get_item_by_id(self, item_id: int) -> Item | None:
+    def get_item_by_id(self, item_id: str) -> Item | None:
         return self._get_item_by_id_provider(item_id)
 
     def create_item(self, new_item: NewItem) -> Item:

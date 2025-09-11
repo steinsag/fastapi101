@@ -39,18 +39,6 @@ def test_with_unknown_item_id_returns_404() -> None:
         app.dependency_overrides.pop(ItemService, None)
 
 
-def test_with_string_item_id_returns_422() -> None:
-    app.dependency_overrides[ItemService] = (
-        lambda: __create_fake_item_service_failing_on_any_call()
-    )
-
-    try:
-        response = client.get("/items/abc")
-        assert response.status_code == 422
-    finally:
-        app.dependency_overrides.pop(ItemService, None)
-
-
 @pytest.mark.parametrize(
     "given_accept_header",
     [
@@ -74,7 +62,7 @@ def test_with_requesting_plain_text_returns_406(given_accept_header: str) -> Non
 
 def test_with_internal_error_returns_500_and_hides_details() -> None:
     class FailingService(ItemServiceProtocol):
-        def get_item_by_id(self, item_id: int):
+        def get_item_by_id(self, item_id: str):
             raise RuntimeError("boom: internal failure")
 
     app.dependency_overrides[ItemService] = lambda: FailingService()
@@ -94,7 +82,7 @@ def __create_fake_item_service_with_response(
     given_response_item: Item | None,
 ) -> ItemServiceProtocol:
     class FakeItemService(ItemServiceProtocol):
-        def get_item_by_id(self, item_id: int):
+        def get_item_by_id(self, item_id: str):
             return given_response_item
 
     return FakeItemService()
@@ -102,7 +90,7 @@ def __create_fake_item_service_with_response(
 
 def __create_fake_item_service_failing_on_any_call() -> ItemServiceProtocol:
     class FakeItemService(ItemServiceProtocol):
-        def get_item_by_id(self, item_id: int):
+        def get_item_by_id(self, item_id: str):
             raise AssertionError("ItemService should not be called")
 
     return FakeItemService()

@@ -22,6 +22,6 @@ def test_get_item_by_id_returns_item_when_found(items_collection) -> None:
 
 
 def test_get_item_by_id_returns_none_when_not_found(items_collection) -> None:
-    actual = mongo_adapter.get_item_by_id(999)
+    actual = mongo_adapter.get_item_by_id("999")
 
     assert actual is None

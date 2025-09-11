@@ -8,10 +8,10 @@ from tests.test.item_data import ITEM_ID, ITEM_NAME, ITEM_PRICE
 
 @pytest.fixture()
 def sut() -> ItemService:
-    def id_gen() -> int:
+    def id_gen() -> str:
         return ITEM_ID
 
-    def create_provider(new_item: NewItem, new_id: int) -> Item:
+    def create_provider(new_item: NewItem, new_id: str) -> Item:
         assert new_id == ITEM_ID
         return Item(id=new_id, name=new_item.name, price=new_item.price)
 

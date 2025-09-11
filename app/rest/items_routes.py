@@ -12,7 +12,7 @@ router = APIRouter()
 
 @router.get("/items/{item_id}", response_model=ItemDto)
 def get_item(
-    item_id: int,
+    item_id: str,
     item_service: ItemServiceProtocol = Depends(ItemService),
 ):
     try:
@@ -29,5 +29,5 @@ def get_item(
 
 
 @router.put("/items/{item_id}")
-def update_item(item_id: int, item: ItemDto) -> Dict[str, float | int | str]:
+def update_item(item_id: str, item: ItemDto) -> Dict[str, float | int | str]:
     return {"item_name": item.name, "item_id": item_id, "item_price": item.price}
