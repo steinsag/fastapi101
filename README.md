@@ -19,7 +19,7 @@ This starts MongoDB on localhost:27017 and creates an application user on DB "te
 
 On first startup, it also seeds the "items" collection with a sample document:
 
-    { "id": 1, "name": "Sample Item", "price": 107.99 }
+    { "_id": 1, "name": "Sample Item", "price": 107.99 }
 
 Set environment variable for the app to connect to MongoDB (note the database name is part of the URL path):
 

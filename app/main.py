@@ -1,11 +1,11 @@
 import sys
 from typing import Callable, Awaitable
 
-from fastapi import Depends, FastAPI, Request, Response
+from fastapi import FastAPI, Request, Response
 from fastapi.responses import JSONResponse
 from fastapi.routing import APIRoute
 
-from app.adapter.mongo_adapter import get_items_collection
+from app.adapter.mongo_adapter import get_item_by_id
 from app.domain.item_service import ItemService
 from app.domain.item_service_protocol import ItemServiceProtocol
 from .rest import items_routes
@@ -25,10 +25,8 @@ for route in app.routes:
         route.response_class = JSONResponse
 
 
-def item_service_provider(
-    items_collection=Depends(get_items_collection),
-) -> ItemServiceProtocol:
-    return ItemService(items_collection_provider=lambda: items_collection)
+def item_service_provider() -> ItemServiceProtocol:
+    return ItemService(get_item_by_id_provider=get_item_by_id)
 
 
 app.dependency_overrides[ItemService] = item_service_provider

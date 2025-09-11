@@ -3,7 +3,7 @@ from fastapi.testclient import TestClient
 
 from app.adapter.mongo_adapter import get_items_collection
 from app.main import app
-from tests.test.item_data import ITEM_ID, ITEM_NAME, ITEM_PRICE
+from tests.test.item_data import ITEM_ID
 from tests.test.item_fixture import create_item_dto_fixture, create_item_db_fixture
 from tests.test.mockserver.mongodb_test_container import mongodb_service
 
