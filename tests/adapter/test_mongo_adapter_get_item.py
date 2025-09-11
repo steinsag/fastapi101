@@ -7,7 +7,7 @@ from tests.test.item_fixture import create_item_db_fixture, create_item_fixture
 
 
 @pytest.fixture()
-def items_collection():
+def items_collection(mongodb_service: str):
     collection = get_items_collection()
     collection.delete_many({})
     return collection

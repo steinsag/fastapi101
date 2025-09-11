@@ -7,7 +7,7 @@ from tests.test.item_data import ITEM_ID, ITEM_NAME, ITEM_PRICE
 
 
 @pytest.fixture()
-def items_collection():
+def items_collection(mongodb_service: str):
     collection = mongo_adapter.get_items_collection()
     collection.delete_many({})
     return collection
