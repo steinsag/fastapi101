@@ -9,7 +9,7 @@ license = { text = "Apache" }
 readme = "README.md"
 requires-python = ">=3.13,<4.0"
 dependencies = [
-    "fastapi[standard-no-fastapi-cloud-cli] (>=0.116.1,<0.117.0)",
+    "fastapi[standard-no-fastapi-cloud-cli] (>=0.116.1,<0.120.0)",
     "confluent-kafka (>=2.11.0,<3.0.0)",
     "pymongo (>=4.8.0,<5.0.0)"
 ]
