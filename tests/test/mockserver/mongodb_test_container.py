@@ -1,13 +1,13 @@
 import os
-from typing import Generator
+from collections.abc import Generator
 from urllib.parse import urlparse
 
 import pytest
-from testcontainers.mongodb import MongoDbContainer  # type: ignore
+from testcontainers.mongodb import MongoDbContainer
 
 
 @pytest.fixture(scope="session")
-def mongodb_service() -> Generator[str, None, None]:
+def mongodb_service() -> Generator[str]:
     with MongoDbContainer("mongo:8.0") as mongo:
         uri = mongo.get_connection_url()
         parsed = urlparse(uri)

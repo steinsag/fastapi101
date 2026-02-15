@@ -1,5 +1,5 @@
 import sys
-from typing import Callable, Awaitable
+from collections.abc import Callable, Awaitable
 
 from fastapi import FastAPI, Request, Response
 from fastapi.responses import JSONResponse

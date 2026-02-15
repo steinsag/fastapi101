@@ -1,7 +1,5 @@
 import json
 
-from confluent_kafka import Consumer  # type: ignore
-
 from app.adapter.kafka_adapter import publish_item
 from app.domain.model.item import Item
 from tests.test.item_fixture import create_item_fixture
@@ -18,6 +16,8 @@ def test_publish_item(kafka_service: str) -> None:
         actual_msg = consumer.poll(timeout=POLL_TIMEOUT)
 
         assert actual_msg is not None
-        data = json.loads(actual_msg.value().decode("utf-8"))
+        val = actual_msg.value()
+        assert val is not None
+        data = json.loads(val.decode("utf-8"))
         actual_item = Item(id=data["item_id"], name=data["name"], price=data["price"])
         assert actual_item == create_item_fixture()

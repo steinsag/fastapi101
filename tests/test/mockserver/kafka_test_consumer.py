@@ -1,6 +1,6 @@
-from confluent_kafka import Consumer  # type: ignore
 from types import TracebackType
-from typing import Optional
+
+from confluent_kafka import Consumer
 
 
 class KafkaTestConsumer:
@@ -16,7 +16,7 @@ class KafkaTestConsumer:
                 "auto.offset.reset": "earliest",
                 "enable.auto.commit": False,
                 "default.topic.config": {"auto.offset.reset": "earliest"},
-            }
+            }  # type: ignore[arg-type]
         )
 
     def __enter__(self) -> Consumer:
@@ -25,9 +25,9 @@ class KafkaTestConsumer:
 
     def __exit__(
         self,
-        exc_type: Optional[type[BaseException]],
-        exc_val: Optional[BaseException],
-        exc_tb: Optional[TracebackType],
-    ) -> Optional[bool]:
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType | None,
+    ) -> bool | None:
         self.consumer.close()
         return None

@@ -1,6 +1,6 @@
 import json
 
-from confluent_kafka import Producer  # type: ignore
+from confluent_kafka import Producer
 
 from app.adapter.config import kafka_config_producer
 from app.domain.model.item import Item
@@ -13,10 +13,10 @@ def publish_item(item: Item) -> None:
     producer.produce(
         topic="items",
         value=json.dumps(payload).encode("utf-8"),
-        key=str(item.id),
+        key=str(item.id).encode("utf-8"),
     )
     producer.flush(timeout=2.0)
 
 
 def get_kafka_producer() -> Producer:
-    return Producer(kafka_config_producer())
+    return Producer(kafka_config_producer())  # type: ignore[arg-type]

@@ -4,7 +4,7 @@
 This project uses package manager [uv](https://github.com/astral-sh/uv) to manage dependencies.
 Run the following to install all dependencies:
 
-    uv sync
+    uv sync --python 3.13
 
 ## Running the service locally
 
@@ -27,7 +27,7 @@ Set environment variable for the app to connect to MongoDB (note the database na
 
 Install dependencies and run the API locally (use FastAPI CLI for better dev experience: auto-reload, live reload for static files, improved error pages):
 
-    uv sync
+    uv sync --python 3.13
     uv run fastapi dev app/main.py
 
 The app listens on http://localhost:8000. Try fetching the seeded item:

@@ -11,14 +11,14 @@ or directly as `python -m scripts.verify`.
 
 Each step streams output and stops on first failure with the same exit code.
 """
+
 from __future__ import annotations
 
 import shutil
 import subprocess
 import sys
-from typing import List
 
-COMMANDS: List[List[str]] = [
+COMMANDS: list[list[str]] = [
     ["ruff", "check", "--fix", "."],
     ["black", "."],
     ["ty", "check"],

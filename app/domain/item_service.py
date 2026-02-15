@@ -1,4 +1,4 @@
-from typing import Callable
+from collections.abc import Callable
 
 from .item_service_protocol import ItemServiceProtocol
 from .model.item import Item

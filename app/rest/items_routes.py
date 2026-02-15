@@ -1,5 +1,3 @@
-from typing import Dict
-
 from fastapi import APIRouter, Depends
 from starlette.responses import JSONResponse
 
@@ -29,5 +27,5 @@ def get_item(
 
 
 @router.put("/items/{item_id}")
-def update_item(item_id: str, item: ItemDto) -> Dict[str, float | int | str]:
+def update_item(item_id: str, item: ItemDto) -> dict[str, float | int | str]:
     return {"item_name": item.name, "item_id": item_id, "item_price": item.price}

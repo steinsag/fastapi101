@@ -1,13 +1,13 @@
 import os
-from typing import Generator
+from collections.abc import Generator
 
 import pytest
-from confluent_kafka.admin import AdminClient, NewTopic  # type: ignore
-from testcontainers.kafka import KafkaContainer  # type: ignore
+from confluent_kafka.admin import AdminClient, NewTopic
+from testcontainers.kafka import KafkaContainer
 
 
 @pytest.fixture(scope="session")
-def kafka_service() -> Generator[str, None, None]:
+def kafka_service() -> Generator[str]:
     with KafkaContainer() as kafka:
         os.environ["KAFKA_ENDPOINT"] = kafka.get_bootstrap_server()
         os.environ["KAFKA_USERNAME"] = "testuser"
