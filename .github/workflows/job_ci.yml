@@ -14,7 +14,7 @@ jobs:
       - name: Set up Python and uv
         uses: astral-sh/setup-uv@v7
         with:
-          python-version: "3.13"
+          python-version: "3.14"
 
       - name: Sync dependencies (including dev)
         run: uv sync
