@@ -15,8 +15,7 @@ class KafkaTestConsumer:
                 "group.id": "test_group",
                 "auto.offset.reset": "earliest",
                 "enable.auto.commit": False,
-                "default.topic.config": {"auto.offset.reset": "earliest"},
-            }  # type: ignore[arg-type]
+            }
         )
 
     def __enter__(self) -> Consumer:

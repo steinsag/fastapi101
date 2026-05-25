@@ -62,7 +62,7 @@ One command to auto-fix formatting/lints, run type checks, and tests:
 
       uv run scripts/verify.py
 
-This runs, in order: `black .`, `ruff check --fix .`, `ty check`, `pytest`.
+This runs, in order: `ruff check --fix .`, `black .`, `ty check`, `pyrefly check`, `pytest`.
 
 ## Code formatting (Black)
 
@@ -96,6 +96,14 @@ Run ty for the whole project:
 
     uv run ty check
 
+## Static type checking (pyrefly)
+
+[pyrefly](https://pyrefly.org/) is used as an additional static type checker.
+
+Run pyrefly for the whole project:
+
+    uv run pyrefly check
+
 ## Running tests (with coverage)
 
 Pytest is configured to generate coverage reports automatically via pytest-cov.
@@ -118,6 +126,7 @@ Enable the repository-managed pre-commit hook so that linters and formatters run
 
 What it does:
 - Runs ty: `uv run ty check`
+- Runs pyrefly: `uv run pyrefly check`
 - Runs Ruff lint: `uv run ruff check .`
 - Runs Black in check mode: `uv run black --check .`
 - Blocks the commit if linting, formatting, or typing issues are found

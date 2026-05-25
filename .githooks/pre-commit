@@ -29,6 +29,11 @@ run_ty_check() {
   uv run ty check
 }
 
+run_pyrefly_check() {
+  echo "[pre-commit] Running static type checks with pyrefly..."
+  uv run pyrefly check
+}
+
 # Ensure uv is available
 require_uv
 
@@ -51,6 +56,13 @@ if ! run_ty_check; then
   echo
   echo "[pre-commit] ty check failed. Please fix type errors and try again."
   echo "You can run locally with: uv run ty check"
+  exit 1
+fi
+
+if ! run_pyrefly_check; then
+  echo
+  echo "[pre-commit] pyrefly check failed. Please fix type errors and try again."
+  echo "You can run locally with: uv run pyrefly check"
   exit 1
 fi
 

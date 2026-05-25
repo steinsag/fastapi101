@@ -4,6 +4,7 @@ from fastapi.testclient import TestClient
 from app.domain.item_service import ItemService
 from app.domain.item_service_protocol import ItemServiceProtocol
 from app.domain.model.item import Item
+from app.domain.model.new_item import NewItem
 from app.main import app
 from tests.test.item_fixture import create_item_dto_fixture, create_item_fixture
 
@@ -62,8 +63,11 @@ def test_with_requesting_plain_text_returns_406(given_accept_header: str) -> Non
 
 def test_with_internal_error_returns_500_and_hides_details() -> None:
     class FailingService(ItemServiceProtocol):
-        def get_item_by_id(self, item_id: str):
+        def get_item_by_id(self, item_id: str) -> Item | None:
             raise RuntimeError("boom: internal failure")
+
+        def create_item(self, new_item: NewItem) -> Item:
+            raise AssertionError("ItemService should not be called")
 
     app.dependency_overrides[ItemService] = lambda: FailingService()
 
@@ -82,15 +86,21 @@ def __create_fake_item_service_with_response(
     given_response_item: Item | None,
 ) -> ItemServiceProtocol:
     class FakeItemService(ItemServiceProtocol):
-        def get_item_by_id(self, item_id: str):
+        def get_item_by_id(self, item_id: str) -> Item | None:
             return given_response_item
+
+        def create_item(self, new_item: NewItem) -> Item:
+            raise AssertionError("ItemService should not be called")
 
     return FakeItemService()
 
 
 def __create_fake_item_service_failing_on_any_call() -> ItemServiceProtocol:
     class FakeItemService(ItemServiceProtocol):
-        def get_item_by_id(self, item_id: str):
+        def get_item_by_id(self, item_id: str) -> Item | None:
+            raise AssertionError("ItemService should not be called")
+
+        def create_item(self, new_item: NewItem) -> Item:
             raise AssertionError("ItemService should not be called")
 
     return FakeItemService()

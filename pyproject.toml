@@ -22,6 +22,7 @@ dev = [
     "ty>=0.0.17",
     "black>=26.1.0",
     "ruff>=0.15.1",
+    "pyrefly>=1.0.0",
 ]
 
 [tool.ruff]
@@ -47,4 +48,10 @@ addopts = "-ra --cov=app --cov-report=term-missing:skip-covered --cov-report=xml
 testpaths = ["tests"]
 filterwarnings = [
     "ignore::DeprecationWarning:testcontainers(\\.|$)",
+]
+
+[tool.pyrefly]
+project-includes = [
+    "**/*.py*",
+    "**/*.ipynb",
 ]
