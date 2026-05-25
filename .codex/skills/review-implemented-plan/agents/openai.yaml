@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review Implemented Plan"
+  short_description: "Review finished changes for design and tests"
+  default_prompt: "Use $review-implemented-plan to review the completed implementation before final handoff."
