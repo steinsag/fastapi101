@@ -47,12 +47,7 @@ Last updated: 2026-05-25
 
 ## TDD and testing
 - Start behavior changes with a failing test whenever practical.
-- Prefer component tests for end-to-end behavior across REST, domain, and adapters.
-- Use focused unit tests when the behavior belongs squarely in domain logic or adapter mapping.
-- Use route tests with `app.dependency_overrides` and fakes implementing the relevant protocol.
-- Use Testcontainers for MongoDB and Kafka integration; do not require a developer's local services for tests.
-- Keep test data builders and fixtures in `tests/test`.
-- Tests should assert observable behavior, response shapes, status codes, content type, and persisted or published side effects where relevant.
+- Follow the detailed testing rules in [TEST_STRATEGY.md](TEST_STRATEGY.md).
 
 ## Local development
 - Install dependencies with `uv sync --python 3.14`.
@@ -87,6 +82,7 @@ Last updated: 2026-05-25
 - [ ] REST, domain, and adapter boundaries remain clean.
 - [ ] DTOs and domain models are mapped explicitly.
 - [ ] MongoDB and Kafka details stay in adapters.
+- [ ] Test coverage remains close to 100% where practical.
 - [ ] Error handling and content negotiation still match tests.
 - [ ] `uv.lock` is updated if dependencies changed.
 - [ ] `README.md` is updated when setup, commands, or behavior changed.
