@@ -1,11 +1,13 @@
 import pytest
 from fastapi.testclient import TestClient
 
+from app.domain.errors import InvalidItemIdError
 from app.domain.item_service import ItemService
 from app.domain.item_service_protocol import ItemServiceProtocol
 from app.domain.model.item import Item
 from app.domain.model.new_item import NewItem
-from app.main import app
+from app.main import app, item_service_provider
+from tests.test.item_data import ITEM_ID
 from tests.test.item_fixture import create_item_dto_fixture, create_item_fixture
 
 client = TestClient(app)
@@ -17,13 +19,33 @@ def test_with_valid_item_returns_success() -> None:
     )
 
     try:
-        response = client.get("/items/1")
+        response = client.get(f"/items/{ITEM_ID}")
 
         assert response.status_code == 200
         assert response.headers["Content-Type"] == "application/json"
         assert response.json() == create_item_dto_fixture().__dict__
     finally:
-        app.dependency_overrides.pop(ItemService, None)
+        app.dependency_overrides[ItemService] = item_service_provider
+
+
+def test_with_invalid_item_id_returns_400() -> None:
+    class InvalidIdService(ItemServiceProtocol):
+        def get_item_by_id(self, item_id: str) -> Item | None:
+            raise InvalidItemIdError("invalid item id")
+
+        def create_item(self, new_item: NewItem) -> Item:
+            raise AssertionError("ItemService should not be called")
+
+    app.dependency_overrides[ItemService] = lambda: InvalidIdService()
+
+    try:
+        response = client.get("/items/123")
+
+        assert response.status_code == 400
+        assert response.headers["Content-Type"] == "application/json"
+        assert response.json() == {"detail": "Bad Request"}
+    finally:
+        app.dependency_overrides[ItemService] = item_service_provider
 
 
 def test_with_unknown_item_id_returns_404() -> None:
@@ -32,12 +54,12 @@ def test_with_unknown_item_id_returns_404() -> None:
     )
 
     try:
-        response = client.get("/items/123")
+        response = client.get("/items/507f1f77bcf86cd799439012")
 
         assert response.status_code == 404
         assert response.json() == {}
     finally:
-        app.dependency_overrides.pop(ItemService, None)
+        app.dependency_overrides[ItemService] = item_service_provider
 
 
 @pytest.mark.parametrize(
@@ -53,12 +75,14 @@ def test_with_requesting_plain_text_returns_406(given_accept_header: str) -> Non
     )
 
     try:
-        response = client.get("/items/1", headers={"Accept": given_accept_header})
+        response = client.get(
+            f"/items/{ITEM_ID}", headers={"Accept": given_accept_header}
+        )
         assert response.status_code == 406
         assert response.headers["Content-Type"] == "application/json"
         assert response.json() == {"detail": "Not Acceptable"}
     finally:
-        app.dependency_overrides.pop(ItemService, None)
+        app.dependency_overrides[ItemService] = item_service_provider
 
 
 def test_with_internal_error_returns_500_and_hides_details() -> None:
@@ -79,7 +103,7 @@ def test_with_internal_error_returns_500_and_hides_details() -> None:
         assert body == {"detail": "Internal Server Error"}
         assert "boom" not in str(body)
     finally:
-        app.dependency_overrides.pop(ItemService, None)
+        app.dependency_overrides[ItemService] = item_service_provider
 
 
 def __create_fake_item_service_with_response(

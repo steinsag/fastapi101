@@ -5,7 +5,8 @@ from fastapi import FastAPI, Request, Response
 from fastapi.responses import JSONResponse
 from fastapi.routing import APIRoute
 
-from app.adapter.mongo_adapter import get_item_by_id, generate_new_id, create_item
+from app.adapter.kafka_adapter import publish_item
+from app.adapter.mongo_adapter import get_item_by_id, create_item
 from app.domain.item_service import ItemService
 from app.domain.item_service_protocol import ItemServiceProtocol
 from .rest import items_routes
@@ -27,9 +28,9 @@ for route in app.routes:
 
 def item_service_provider() -> ItemServiceProtocol:
     return ItemService(
-        id_generator=generate_new_id,
         get_item_by_id_provider=get_item_by_id,
         create_item_provider=create_item,
+        item_created_publisher=publish_item,
     )
 
 
