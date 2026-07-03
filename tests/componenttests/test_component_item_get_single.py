@@ -1,4 +1,5 @@
 import pytest
+from bson import ObjectId
 from fastapi.testclient import TestClient
 
 from app.adapter.mongo_adapter import get_items_collection
@@ -18,7 +19,7 @@ def items_collection(mongodb_service: str):
 
 
 def test_get_item_existing_returns_item(items_collection) -> None:
-    items_collection.insert_one(create_item_db_fixture())
+    items_collection.insert_one(create_item_db_fixture(ObjectId(ITEM_ID)))
 
     response = client.get(f"/items/{ITEM_ID}")
 
@@ -27,9 +28,9 @@ def test_get_item_existing_returns_item(items_collection) -> None:
     assert response.json() == create_item_dto_fixture().__dict__
 
 
-def test_get_item_missing_returns_404(items_collection) -> None:
+def test_get_item_with_invalid_id_returns_400(items_collection) -> None:
     response = client.get("/items/123")
 
-    assert response.status_code == 404
+    assert response.status_code == 400
     assert response.headers["Content-Type"] == "application/json"
-    assert response.json() == {}
+    assert response.json() == {"detail": "Bad Request"}

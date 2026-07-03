@@ -2,9 +2,11 @@ import os
 from typing import Any
 
 from bson import ObjectId
+from bson.errors import InvalidId
 from pymongo import MongoClient
 from pymongo.errors import ConfigurationError
 
+from app.domain.errors import InvalidItemIdError
 from app.domain.model.item import Item
 from app.domain.model.new_item import NewItem
 
@@ -36,20 +38,20 @@ def get_items_collection() -> Any:
 
 
 def get_item_by_id(item_id: str) -> Item | None:
+    try:
+        object_id = ObjectId(item_id)
+    except InvalidId:
+        raise InvalidItemIdError("item_id must be a valid ObjectId") from None
+
     collection = get_items_collection()
-    doc = collection.find_one({"_id": item_id}, {"_id": 1, "name": 1, "price": 1})
+    doc = collection.find_one({"_id": object_id}, {"_id": 1, "name": 1, "price": 1})
     if doc is None:
         return None
     return Item(id=str(doc["_id"]), name=str(doc["name"]), price=float(doc["price"]))
 
 
-def generate_new_id() -> str:
-    oid = ObjectId()
-    return str(oid)
-
-
-def create_item(new_item: NewItem, new_id: str) -> Item:
+def create_item(new_item: NewItem) -> Item:
     collection = get_items_collection()
-    doc = {"_id": new_id, "name": new_item.name, "price": new_item.price}
-    collection.insert_one(doc)
-    return Item(id=str(new_id), name=new_item.name, price=new_item.price)
+    doc = {"name": new_item.name, "price": new_item.price}
+    result = collection.insert_one(doc)
+    return Item(id=str(result.inserted_id), name=new_item.name, price=new_item.price)
