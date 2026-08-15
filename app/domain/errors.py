@@ -1,0 +1,2 @@
+class InvalidItemIdError(ValueError):
+    pass
