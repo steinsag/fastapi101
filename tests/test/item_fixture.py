@@ -13,14 +13,15 @@ def create_item_fixture() -> Item:
 
 def create_item_dto_fixture() -> ItemDto:
     return ItemDto(
+        id=ITEM_ID,
         name=ITEM_NAME,
         price=ITEM_PRICE,
     )
 
 
-def create_item_db_fixture() -> dict:
+def create_item_db_fixture(item_id) -> dict:
     return {
-        "_id": ITEM_ID,
+        "_id": item_id,
         "name": ITEM_NAME,
         "price": ITEM_PRICE,
     }

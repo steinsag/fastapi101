@@ -15,14 +15,14 @@ if (!db.getUser('test')) {
   });
 }
 
-// Seed or update item _id:"1"
+// Seed or update item with ObjectId _id
 // Use upsert to ensure the document exists with expected fields
-// Note: keep literal types (_id as string) to match application expectations
-const seedId = "1";
+// Note: the API exposes this ID as a readable hex string
+const seedId = ObjectId("507f1f77bcf86cd799439011");
 db.items.updateOne(
   { _id: seedId },
   { $set: { name: 'Sample Item', price: 107.99 } },
   { upsert: true }
 );
 
-print('Mongo seed complete: ensured user "test" and upserted items["1"]');
+print('Mongo seed complete: ensured user "test" and upserted items["507f1f77bcf86cd799439011"]');

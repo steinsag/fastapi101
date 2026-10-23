@@ -8,7 +8,7 @@ Run the following to install all dependencies:
 
 ## Running the service locally
 
-Start MongoDB via Docker Compose (one-time seed included):
+Start MongoDB and Kafka via Docker Compose (one-time seed included):
 
     docker compose -f scripts/docker/docker-compose.yml up -d
 
@@ -17,13 +17,19 @@ This starts MongoDB on localhost:27017 and creates an application user on DB "te
 - password: test
 - database: test
 
-On the first startup, it also seeds the "items" collection with a sample document:
+On the first startup, it also seeds the "items" collection with a sample item available through this API id:
 
-    { "_id": "1", "name": "Sample Item", "price": 107.99 }
+    507f1f77bcf86cd799439011
 
-Set environment variable for the app to connect to MongoDB (note the database name is part of the URL path):
+Kafka is available on localhost:9092.
+
+Set environment variables for the app to connect to MongoDB and Kafka (note the database name is part of the MongoDB URL path):
 
     export MONGODB_URL="mongodb://test:test@localhost:27017/test?authSource=test"
+    export KAFKA_ENDPOINT="localhost:9092"
+    export KAFKA_USERNAME="testuser"
+    export KAFKA_PASSWORD="testpass"
+    export KAFKA_SECURITY_PROTOCOL="PLAINTEXT"
 
 Install dependencies and run the API locally (use FastAPI CLI for better dev experience: auto-reload, live reload for static files, improved error pages):
 
@@ -32,13 +38,24 @@ Install dependencies and run the API locally (use FastAPI CLI for better dev exp
 
 The app listens on http://localhost:8000. Try fetching the seeded item:
 
-    curl http://localhost:8000/items/1
+    curl http://localhost:8000/items/507f1f77bcf86cd799439011
 
 Expected response:
 
-    {"id": "1", "name": "Sample Item", "price": 107.99}
+    {"id": "507f1f77bcf86cd799439011", "name": "Sample Item", "price": 107.99}
 
-To stop MongoDB when finished:
+Create a new item:
+
+    curl -i -X POST http://localhost:8000/items \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"name":"New Item","price":12.99}'
+
+Expected response status is `201 Created` with this body shape:
+
+    {"id":"...","name":"New Item","price":12.99}
+
+To stop MongoDB and Kafka when finished:
 
     docker compose -f scripts/docker/docker-compose.yml down
 
@@ -48,13 +65,17 @@ Build the container:
 
     docker build -t fastapi101 .
 
-Run the container (provide MongoDB connection via env var):
+Run the container (provide MongoDB and Kafka connection via env vars):
 
     docker run -p 8000:8000 \
       -e MONGODB_URL="mongodb://test:test@host.docker.internal:27017/test?authSource=test" \
+      -e KAFKA_ENDPOINT="host.docker.internal:9092" \
+      -e KAFKA_USERNAME="testuser" \
+      -e KAFKA_PASSWORD="testpass" \
+      -e KAFKA_SECURITY_PROTOCOL="PLAINTEXT" \
       fastapi101
 
-The app is listening on port 8000 locally. Try: http://localhost:8000/items/1
+The app is listening on port 8000 locally. Try: http://localhost:8000/items/507f1f77bcf86cd799439011
 
 ## Verify (format, lint, type-check, tests)
 
